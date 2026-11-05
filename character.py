@@ -1,12 +1,12 @@
 # Object-oriented game simulator
 # Based on game_simulator_v1.py by Turid Torheim, NMBU, 2026
 # Extended by Sivert Svenningsen and Fabian Feiler, INF201 Deliverable 3
-
+from items import Weapon
 
 class Character:
     """Represents a character in the RPG"""
 
-    def __init__(self, name: str, hp_max: int = 100, damage: int = 10) -> None:
+    def __init__(self, name: str, hp_max: int = 100, damage: int = 10, weapon: Weapon | None = None) -> None:
         """
         Initialise the Character
 
@@ -14,11 +14,13 @@ class Character:
             name (str): The name of the character.
             hp_max (int): Max hit points (default = 100)
             damage (int): Damage dealt when character attacks (default = 10)
+            weapon (Weapon | None): The weapon the character wields (default = None)
         """
         self.name = name
         self._hp = hp_max  # Protected: only changed by take_damage() and heal()
         self.hp_max = hp_max
         self.damage = damage
+        self.weapon = weapon
 
     def take_damage(self, amount: int) -> None:
         """Reduce own HP by amount. HP cannot go below 0."""
@@ -29,8 +31,11 @@ class Character:
         self._hp = min(self._hp + amount, self.hp_max)
 
     def attack(self, target) -> None:
-        """Attack target character by calling its take_damage() method"""
-        target.take_damage(self.damage)
+        """Attack target. Use the weapon if the character has one."""
+        if self.weapon is not None:
+            target.take_damage(self.weapon.roll_damage())
+        else:
+            target.take_damage(self.damage)
 
     def introduce(self) -> None:
         """Print a string that introduces the character"""
