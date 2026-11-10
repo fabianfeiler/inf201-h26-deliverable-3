@@ -1,7 +1,7 @@
 """
 Module: dice
 Description: Dice class for random damage rolls in the RPG.
-Author: Fabian Feiler and Sivert
+Author: Fabian Feiler and Sivert Svenningsen
 Date: 2026-11-04
 """
 
