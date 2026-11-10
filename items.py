@@ -1,5 +1,7 @@
-# Items for the RPG battle simulator
-# Sivert Svenningsen and Fabian Feiler, INF201 Deliverable 3
+"""
+Items for the RPG battle simulator.
+Sivert Svenningsen and Fabian Feiler, INF201 Deliverable 3
+"""
 
 from dice import Dice
 
@@ -19,5 +21,10 @@ class Weapon:
         self.damage_dice = damage_dice
 
     def roll_damage(self) -> int:
-        """Roll the damage dice and return the damage"""
+        """
+        Roll the damage dice
+
+        Returns:
+            int: The damage rolled.
+        """
         return self.damage_dice.roll()

@@ -1,6 +1,9 @@
-# Object-oriented game simulator
-# Based on game_simulator_v1.py by Turid Torheim, NMBU, 2026
-# Extended by Sivert Svenningsen and Fabian Feiler, INF201 Deliverable 3
+"""
+Object-oriented game simulator.
+
+Based on game_simulator_v1.py by Turid Torheim, NMBU, 2026
+Extended by Sivert Svenningsen and Fabian Feiler, INF201 Deliverable 3
+"""
 
 from items import Weapon
 
@@ -27,14 +30,34 @@ class Character:
         self.weapon = weapon
 
     def take_damage(self, amount: int) -> None:
-        """Reduce own HP by amount. HP cannot go below 0."""
+        """
+        Reduce own HP by amount. HP cannot go below 0.
+
+        Args:
+            amount (int): The damage taken.
+
+        Raises:
+            ValueError: If amount is negative.
+        """
+        if amount < 0:
+            raise ValueError("Damage cannot be negative")
         self._hp = max(self._hp - amount, 0)
 
     def heal(self, amount: int) -> None:
-        """Increase own HP by amount. HP cannot go above hp_max."""
+        """
+        Increase own HP by amount. HP cannot go above hp_max.
+
+        Args:
+            amount (int): The HP to heal.
+
+        Raises:
+            ValueError: If amount is negative.
+        """
+        if amount < 0:
+            raise ValueError("Heal amount cannot be negative")
         self._hp = min(self._hp + amount, self.hp_max)
 
-    def attack(self, target) -> None:
+    def attack(self, target: "Character") -> None:
         """Attack target. Use the weapon if the character has one."""
         if self.weapon is not None:
             target.take_damage(self.weapon.roll_damage())
@@ -47,11 +70,11 @@ class Character:
 
     def __repr__(self) -> str:
         """Representation of character object"""
-        return f"<Character name={self.name} hp={self.hp} damage={self.damage}>"
+        return f"<{type(self).__name__} name={self.name} hp={self.hp} damage={self.damage}>"
 
     def __str__(self) -> str:
         """String representation of character object"""
-        return f"Character: {self.name} with {self.hp} HP and {self.damage} damage"
+        return f"{type(self).__name__}: {self.name} with {self.hp} HP and {self.damage} damage"
 
     @property
     def hp(self) -> int:
@@ -84,7 +107,12 @@ class Warrior(Character):
         self.armor = armor
 
     def take_damage(self, amount: int) -> None:
-        """Reduce damage by armor, then take the rest. Damage cannot be below 0."""
+        """
+        Reduce damage by armor, then take the rest. Damage cannot be below 0.
+
+        Args:
+            amount (int): The damage before armor is applied.
+        """
         reduced_damage = max(amount - self.armor, 0)
         super().take_damage(reduced_damage)
 
@@ -111,7 +139,7 @@ class Mage(Character):
         self.mana = mana
         self.mana_max = mana_max
 
-    def attack(self, target) -> None:
+    def attack(self, target: "Character") -> None:
         """Magic attack with double damage if mana >= 10. Otherwise base attack and restore 5 mana."""
         if self.mana >= 10:
             self.mana -= 10
